@@ -1,3 +1,4 @@
+import { FC } from "react";
 import LoadingIcon from "../../shared/components/LoadingIcon";
 import useLabels from "../hooks/useLabels";
 
@@ -10,7 +11,12 @@ import useLabels from "../hooks/useLabels";
 	return data;
 } */
 
-export const LabelPicker = () => {
+interface Props {
+	selectedLabels: string[];
+	onChange: (labelName: string) => void;
+}
+
+export const LabelPicker: FC<Props> = ({ selectedLabels, onChange }) => {
 	const { labelsQuery } = useLabels();
 
 	/* console.log(labelsQuery.data); */
@@ -24,8 +30,11 @@ export const LabelPicker = () => {
 		<div>
 			{labelsQuery.data?.map((label) => (
 				<span
+					onClick={() => onChange(label.name)}
 					key={label.id}
-					className="badge rounded-pill m-1 label-picker"
+					className={`badge rounded-pill m-1 label-picker ${
+						selectedLabels.includes(label.name) ? "label-active" : ""
+					} `}
 					style={{
 						border: `1px solid #${label.color}`,
 						color: `#${label.color}`,
