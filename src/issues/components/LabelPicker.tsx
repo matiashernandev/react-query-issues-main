@@ -1,7 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { githubApi } from "../../api/githubApi";
-
-import { Label } from "../interfaces/label";
+import LoadingIcon from "../../shared/components/LoadingIcon";
+import useLabels from "../hooks/useLabels";
 
 /* async function getLabels() {
 	const res = await fetch("https://api.github.com/repos/facebook/react/labels");
@@ -12,32 +10,30 @@ import { Label } from "../interfaces/label";
 	return data;
 } */
 
-async function getLabels(): Promise<Label[]> {
-	const { data } = await githubApi.get<Label[]>("/labels");
-
-	console.log(data);
-
-	return data;
-}
-
 export const LabelPicker = () => {
-	const query = useQuery(
-		["labels"],
-		getLabels,
+	const { labelsQuery } = useLabels();
 
-		{
-			refetchOnWindowFocus: false,
-		}
-	);
+	/* console.log(labelsQuery.data); */
+
+	if (labelsQuery.isLoading) {
+		//? isLoading (primera carga) en lugar de isFetching (por cada petición con data en caché)
+		return <LoadingIcon />;
+	}
 
 	return (
 		<div>
-			<span
-				className="badge rounded-pill m-1 label-picker"
-				style={{ border: `1px solid #ffccd3`, color: "#ffccd3" }}
-			>
-				Primary
-			</span>
+			{labelsQuery.data?.map((label) => (
+				<span
+					key={label.id}
+					className="badge rounded-pill m-1 label-picker"
+					style={{
+						border: `1px solid #${label.color}`,
+						color: `#${label.color}`,
+					}}
+				>
+					{label.name}
+				</span>
+			))}{" "}
 		</div>
 	);
 };
