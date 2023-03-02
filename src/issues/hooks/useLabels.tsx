@@ -13,7 +13,7 @@ async function getLabels(): Promise<Label[]> {
 	return data;
 }
 
-export default function useLabels() {
+export function useLabels() {
 	const labelsQuery = useQuery(
 		["labels"],
 		getLabels,
