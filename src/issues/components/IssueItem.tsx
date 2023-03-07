@@ -13,7 +13,7 @@ export const IssueItem: React.FC<Props> = ({ issue }) => {
 
 	const queryClient = useQueryClient();
 
-	const onMouseEnter = () => {
+	const prefetchData = () => {
 		console.log("entrando");
 		queryClient.prefetchQuery(["issue", issue.number], () =>
 			getIssueInfo(issue.number)
@@ -23,9 +23,15 @@ export const IssueItem: React.FC<Props> = ({ issue }) => {
 		);
 	};
 
+	//? Precarga con la data, no realiza peticiones nuevas
+	const preSetData = () => {
+		queryClient.setQueryData(["issue", issue.number], issue);
+	};
+
 	return (
 		<div
-			onMouseEnter={onMouseEnter}
+			/* onMouseEnter={prefetchData} */
+			onMouseEnter={preSetData}
 			className="card mb-2 issue"
 			onClick={() => navigate(`/issues/issue/${issue.number}`)}
 		>
