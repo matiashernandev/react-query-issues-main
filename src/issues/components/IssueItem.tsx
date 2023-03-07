@@ -25,7 +25,9 @@ export const IssueItem: React.FC<Props> = ({ issue }) => {
 
 	//? Precarga con la data, no realiza peticiones nuevas
 	const preSetData = () => {
-		queryClient.setQueryData(["issue", issue.number], issue);
+		queryClient.setQueryData(["issue", issue.number], issue, {
+			updatedAt: new Date().getTime() + 1000 * 60 * 60,
+		});
 	};
 
 	return (
