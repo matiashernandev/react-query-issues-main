@@ -5,7 +5,7 @@ import { Issue } from "../interfaces";
 
 export const getIssueInfo = async (issueNumber: number): Promise<Issue> => {
 	const { data } = await githubApi.get<Issue>(`/issues/${issueNumber}`);
-	await sleep(2);
+	//await sleep(2);
 	//console.log(data);
 	return data;
 };
@@ -16,7 +16,7 @@ export const getIssueComments = async (
 	const { data } = await githubApi.get<Issue[]>(
 		`/issues/${issueNumber}/comments`
 	);
-	await sleep(2);
+	//await sleep(2);
 	//console.log(data);
 	return data;
 };
